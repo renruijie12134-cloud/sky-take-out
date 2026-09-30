@@ -90,17 +90,17 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setStatus(StatusConstant.ENABLE);
 
         // 设置当前记录的创建时间和修改时间
-
-        employee.setCreateTime(LocalDateTime.now());
-        employee.setUpdateTime(LocalDateTime.now());
-
-
-        // 设置当前记录的创建人和修改人
-        // 设置当前记录的创建人和修改人  后期它应该是一个登录的员工id
-        // 在拦截器 JwtTokenAdminInterceptor 中，已经把当前登录员工的id存入了ThreadLocal中了‘
-        // 现在我们直接用就好
-        employee.setCreateUser(BaseContext.getCurrentId());
-        employee.setUpdateUser(BaseContext.getCurrentId());
+//        // 已经通过 AOP  处理了这些公共代码，所以这里不需要再处理
+//        employee.setCreateTime(LocalDateTime.now());
+//        employee.setUpdateTime(LocalDateTime.now());
+//
+//
+//        // 设置当前记录的创建人和修改人
+//        // 设置当前记录的创建人和修改人  后期它应该是一个登录的员工id
+//        // 在拦截器 JwtTokenAdminInterceptor 中，已经把当前登录员工的id存入了ThreadLocal中了‘
+//        // 现在我们直接用就好
+//        employee.setCreateUser(BaseContext.getCurrentId());
+//        employee.setUpdateUser(BaseContext.getCurrentId());
 
         employeeMapper.insert(employee);
 
@@ -184,13 +184,15 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         // 其他employeeDTO中没有的属性可以不管
         // 但是，这个修改时间和修改人，还是得改一改的
-        employee.setUpdateTime(LocalDateTime.now());
 
-        // 设置当前记录的创建人和修改人
-        // 设置当前记录的创建人和修改人  后期它应该是一个登录的员工id
-        // 在拦截器 JwtTokenAdminInterceptor 中，已经把当前登录员工的id存入了ThreadLocal中了‘
-        // 现在我们直接用就好
-        employee.setUpdateUser(BaseContext.getCurrentId());
+        // 已经通过 AOP  处理了这些公共代码，所以这里不需要再处理
+//        employee.setUpdateTime(LocalDateTime.now());
+//
+//        // 设置当前记录的创建人和修改人
+//        // 设置当前记录的创建人和修改人  后期它应该是一个登录的员工id
+//        // 在拦截器 JwtTokenAdminInterceptor 中，已经把当前登录员工的id存入了ThreadLocal中了‘
+//        // 现在我们直接用就好
+//        employee.setUpdateUser(BaseContext.getCurrentId());
 
         employeeMapper.update(employee);
     }
