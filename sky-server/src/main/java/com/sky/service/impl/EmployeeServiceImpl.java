@@ -128,4 +128,35 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         return new PageResult(page.getTotal(), page.getResult());
     }
+
+    /**
+     * 员工启用或禁用
+     * @param status
+     * @param id
+     * @return
+
+     */
+    public void startOrStop(Integer status, Long id) {
+        // 最终我希望执行：update employee set status = ? where id = ?
+        // 但是为了提升复用性，我打算把它写成动态SQL，
+        // 做动态更新的话就要传入一个实体类
+
+        // 第一种对象创建方式
+//        Employee employee = new Employee();
+//        employee.setStatus(status);
+//        employee.setId(id);
+
+        // 第二种对象创建方式  Employee 这个类被@Builder 注解处理过，所以可以使用
+        Employee employee = Employee.builder()
+                .status(status)
+                .id(id)
+                .build();
+
+        employeeMapper.update(employee);
+
+    }
 }
+/*
+
+ reutrn new PageResult(,)
+ */

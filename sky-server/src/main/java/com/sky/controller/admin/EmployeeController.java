@@ -112,4 +112,26 @@ public class EmployeeController {
 
     }
 
+    /**
+     * 员工启用或禁用
+     * @param status
+     * @param id
+     * @return
+     * @PostMapping("/status/{status}") 之所以要这么写是查询了接口文档
+     * @PathVariable表示路径变量，即参数status是从@PostMapping("/status/{status}")的{status}中获取的
+     *
+     */
+    @PostMapping("/status/{status}")
+    @ApiOperation("启用禁用员工账号")
+    public Result startOrStop(@PathVariable Integer status,Long id){
+        log.info("员工启用或禁用：{}，{}", status, id);
+        employeeService.startOrStop(status, id);
+        return Result.success();
+    }
+
+
 }
+
+/*
+
+ */
