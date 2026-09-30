@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!---->
+<!--任何Mapper.xml文件，上面的这一部分都是一样的-->
+<!--下面的内容就不一样了-->
+<!--另外要注意这个文件建立的位置，要和Mapper接口建立在同一个包下-->
 <mapper namespace="com.sky.mapper.CategoryMapper">
 
     <select id="pageQuery" resultType="com.sky.entity.Category">
@@ -16,7 +20,7 @@
         order by sort asc , create_time desc
     </select>
 
-    <update id="update" parameterType="Category">
+    <update id="update" parameterType="com.sky.entity.Category">
         update category
         <set>
             <if test="type != null">
@@ -41,7 +45,7 @@
         where id = #{id}
     </update>
 
-    <select id="list" resultType="Category">
+    <select id="list" resultType="com.sky.entity.Category">
         select * from category
         where status = 1
         <if test="type != null">
@@ -49,4 +53,5 @@
         </if>
         order by sort asc,create_time desc
     </select>
+
 </mapper>
