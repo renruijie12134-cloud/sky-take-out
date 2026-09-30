@@ -1,6 +1,7 @@
 package com.sky.controller.admin;
 
 import com.sky.constant.JwtClaimsConstant;
+import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
 import com.sky.entity.Employee;
 import com.sky.properties.JwtProperties;
@@ -75,5 +76,27 @@ public class EmployeeController {
     public Result<String> logout() {
         return Result.success();
     }
+
+
+    /**
+     * 新增员工
+     * @param employeeDTO
+     * @return
+     */
+    // 从接口文档可以知道这个的访问路径是/admin/employee
+    // 所以没有必要再在@PostMapping()写访问局路径了
+    @PostMapping
+    @ApiOperation("新增员工")
+    // 我是用 DTO 从前端接收前端传递过来的信息
+    // 前端传来得到信息里有的字段都和 EmployeeDTO 实体类里有的字段都对应上
+    public Result save(@RequestBody EmployeeDTO employeeDTO){
+        // 想在运行时看一看传过来的参数是多少，可以使用log
+        log.info("新增员工：{}", employeeDTO);
+        // 调用service保存员工信息
+        employeeService.save(employeeDTO);
+        return Result.success();
+    }
+
+
 
 }
