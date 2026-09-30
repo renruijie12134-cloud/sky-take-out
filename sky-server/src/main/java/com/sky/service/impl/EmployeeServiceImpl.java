@@ -16,12 +16,15 @@ import com.sky.exception.PasswordErrorException;
 import com.sky.mapper.EmployeeMapper;
 import com.sky.result.PageResult;
 import com.sky.service.EmployeeService;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 import java.time.LocalDateTime;
+
+import static jdk.nashorn.internal.runtime.regexp.joni.Config.log;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -155,6 +158,44 @@ public class EmployeeServiceImpl implements EmployeeService {
         employeeMapper.update(employee);
 
     }
+
+    /**
+     * 根据ID查询员工信息
+     * @parm id
+     * @return
+     */
+    public Employee getById(Long id) {
+        Employee employee = employeeMapper.getById(id);
+        // 这个位置会读取到数据库里保存的员工信息，这个信息里有密码
+        // 虽然密码是见过加密的，但是，就算是加密的，我也不想让前端看
+        employee.setPassword("*******");
+        return employee;
+    }
+
+
+    /**
+     * 编辑员工信息
+     */
+    public void update(EmployeeDTO employeeDTO){
+        Employee employee = new Employee();
+        // 对象属性拷贝
+        BeanUtils.copyProperties(employeeDTO, employee);
+
+
+        // 其他employeeDTO中没有的属性可以不管
+        // 但是，这个修改时间和修改人，还是得改一改的
+        employee.setUpdateTime(LocalDateTime.now());
+
+        // 设置当前记录的创建人和修改人
+        // 设置当前记录的创建人和修改人  后期它应该是一个登录的员工id
+        // 在拦截器 JwtTokenAdminInterceptor 中，已经把当前登录员工的id存入了ThreadLocal中了‘
+        // 现在我们直接用就好
+        employee.setUpdateUser(BaseContext.getCurrentId());
+
+        employeeMapper.update(employee);
+    }
+
+
 }
 /*
 
