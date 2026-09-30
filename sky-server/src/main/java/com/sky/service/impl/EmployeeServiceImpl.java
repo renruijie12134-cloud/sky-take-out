@@ -1,16 +1,20 @@
 package com.sky.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.sky.constant.MessageConstant;
 import com.sky.constant.PasswordConstant;
 import com.sky.constant.StatusConstant;
 import com.sky.context.BaseContext;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
+import com.sky.dto.EmployeePageQueryDTO;
 import com.sky.entity.Employee;
 import com.sky.exception.AccountLockedException;
 import com.sky.exception.AccountNotFoundException;
 import com.sky.exception.PasswordErrorException;
 import com.sky.mapper.EmployeeMapper;
+import com.sky.result.PageResult;
 import com.sky.service.EmployeeService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,6 +87,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setStatus(StatusConstant.ENABLE);
 
         // 设置当前记录的创建时间和修改时间
+
         employee.setCreateTime(LocalDateTime.now());
         employee.setUpdateTime(LocalDateTime.now());
 
@@ -100,4 +105,27 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
 
+    /**
+     * 分页查询
+     * @param employeePageQueryDTO
+     */
+    public PageResult pageQuery(EmployeePageQueryDTO employeePageQueryDTO) {
+        // 导入了一个分页坐标：>pagehelper-spring-boot-starter
+        // 这就使得接下来的操作很方便
+        // 告诉我们引入的插件，我想查第几页，每页多少条，
+        // 将 limit ? ? 中的参数设置好
+        // 告诉 PageHelper：紧接着执行的 MyBatis 查询，需要查询第 2 页，每页 10 条。这一行本身没有查询数据库。
+        // 它只是把分页信息准备好,然后等待下一条 MyBatis 查询
+        PageHelper.startPage(employeePageQueryDTO.getPage(), employeePageQueryDTO.getPageSize());
+        // pagehelper-spring-boot-starter 要求我们的返回值是固定的，就叫 page
+        // 这个 Page 本质上是一个List集合
+        // 真正执行查询,
+        // PageHelper 会拦截紧接着的 MyBatis 查询，并根据数据库类型给 SQL 增加分页逻辑。
+        Page<Employee> page = employeeMapper.pageQuery(employeePageQueryDTO);
+
+        //第一行设置“下一次查询”的分页参数，
+        // 第二行执行真正的数据库查询，PageHelper 会拦截这次查询并自动完成分页。
+
+        return new PageResult(page.getTotal(), page.getResult());
+    }
 }

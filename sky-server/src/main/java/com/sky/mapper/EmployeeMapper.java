@@ -1,5 +1,7 @@
 package com.sky.mapper;
 
+import com.github.pagehelper.Page;
+import com.sky.dto.EmployeePageQueryDTO;
 import com.sky.entity.Employee;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -27,4 +29,14 @@ public interface EmployeeMapper {
     @Insert("insert into employee (username, password, name, phone, sex, id_number, status, create_time, update_time, create_user, update_user) " +
             "values (#{username}, #{password}, #{name}, #{phone}, #{sex}, #{idNumber}, #{status}, #{createTime}, #{updateTime}, #{createUser}, #{updateUser})")
     void insert(Employee employee);
+
+    /**
+     * 员工分页查询
+     * @param employeePageQueryDTO
+     * @return
+     * 接下来要为分页查询编写SQL，因为它比较复杂
+     * 所以我们使用XML文件来编写SQL语句
+     * // 这个 Page 本质上是一个List集合
+     */
+    Page<Employee> pageQuery(EmployeePageQueryDTO employeePageQueryDTO);
 }
