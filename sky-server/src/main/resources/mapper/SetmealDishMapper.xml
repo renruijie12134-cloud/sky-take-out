@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!---->
+<!--任何Mapper.xml文件，上面的这一部分都是一样的-->
+<!--下面的内容就不一样了-->
+<!--另外要注意这个文件建立的位置，要和Mapper接口建立在同一个包下-->
+<mapper namespace="com.sky.mapper.SetmealDishMapper">
+
+    <select id="getSetmealByDishIds" resultType="java.lang.Long">
+        select setmeal_id from setmeal_dish where dish_id in
+        <foreach collection="dishIds" item="dishId"  separator="," open="(" close=")">
+            #{dishId}
+        </foreach>
+    </select>
+</mapper>

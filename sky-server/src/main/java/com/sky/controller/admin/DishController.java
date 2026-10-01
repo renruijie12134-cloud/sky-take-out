@@ -12,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  *菜品管理
  */
@@ -41,6 +43,9 @@ public class DishController {
      * 菜品分页查询
      * @parm dishPageQueryDTO
      * @return
+     * @return
+     * GetMapping从前端获取的参数可以不用 @RequestBody修饰，
+     * 而从Postman获取的参数需要使用 @RequestBody修饰
      */
     @GetMapping("/page")
     @ApiOperation("菜品分页查询")
@@ -50,5 +55,19 @@ public class DishController {
         return Result.success(pageResult);
     }
 
-
+    /**
+     * 菜品的批量删除
+     * @param ids
+     * @return
+     * 前端传来的是一个字符串，包含多个id，用逗号分隔，
+     * 利用SpringMVC的自动参数转换，将字符串转换成List<Long>再传给服务层
+     * 参数转换是自动进行的，@RequestParam，@PathVariable都具备这个功能
+     */
+    @DeleteMapping
+    @ApiOperation("菜品的批量删除")
+    public Result delete(@RequestParam List<Long> ids){
+        log.info("菜品的批量删除{}", ids);
+        dishService.deleteBatch(ids);
+        return Result.success();
+    }
 }
