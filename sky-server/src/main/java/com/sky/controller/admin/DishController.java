@@ -12,9 +12,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  *菜品管理
@@ -28,6 +30,8 @@ public class DishController {
 
     @Autowired
     private DishService dishService;
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     /**
      * 新增菜品
@@ -38,7 +42,12 @@ public class DishController {
     public Result save(@RequestBody DishDTO dishDTO){
         log.info("新增菜品：{}", dishDTO);
         dishService.saveWithFlavor(dishDTO);
+        // 清理redis缓存
+        String key="dish_"+dishDTO.getCategoryId();
+//        redisTemplate.delete(key);
+        clearCache(key);
         return Result.success();
+
     }
 
     /**
@@ -70,7 +79,15 @@ public class DishController {
     public Result delete(@RequestParam List<Long> ids){
         log.info("菜品的批量删除{}", ids);
         dishService.deleteBatch(ids);
+        // 清理redis缓存，因为批量删除时，或许修改多个分类下的菜品
+        // 我无法区分到时修了哪一个，或许可以用一段复杂的代码找出到底需要清理那个分类
+        // 但是太麻烦，所以我选择将所有分类下的菜品缓存都清理掉
+//        Set keys = redisTemplate.keys("dish_*");
+//        redisTemplate.delete(keys);
+        clearCache("dish_*");
+
         return Result.success();
+
     }
 
     /**
@@ -92,6 +109,15 @@ public class DishController {
     public Result update(@RequestBody DishDTO dishDTO){
         log.info("修改菜品：{}", dishDTO);
         dishService.updateWithFlavor(dishDTO);
+
+        // 在你修改时，有些字段就算你修改了，也不需要更新缓存，因为这些字段不涉及菜品的查询
+        // 但有些就影响，比如修改菜品的分类，修改菜品的状态（起售和停售），这些操作都需要更新缓存
+        // 为了方便，缓存全删掉
+//        Set keys = redisTemplate.keys("dish_*");
+//        redisTemplate.delete(keys);
+        clearCache("dish_*");
+
+
         return Result.success();
     }
 
@@ -106,6 +132,14 @@ public class DishController {
         return Result.success(dishList);
     }
 
+    /**
+     * 清流缓存数据
+     */
+    private void clearCache(String pattern){
+        Set keys = redisTemplate.keys(pattern);
+        redisTemplate.delete(keys);
+    }
+
 //    /**
 //     * 菜品的起售和停售
 //     */
@@ -114,6 +148,10 @@ public class DishController {
 //    public Result updateStatus(@PathVariable Integer status, @RequestParam Long id){
 //        log.info("菜品的起售和停售：{}", status);
 //        dishService.updateStatus(status, id);
+
+//        Set keys = redisTemplate.keys("dish_*");
+//        redisTemplate.delete(keys);
+
 //        return Result.success();
 //    }
 
