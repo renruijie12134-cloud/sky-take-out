@@ -30,4 +30,9 @@ public interface ShoppingCartMapper {
     @Insert("insert into shopping_cart (user_id, dish_id, setmeal_id, name, amount, image, number, dish_Flavor,create_time) " +
             "values (#{userId}, #{dishId}, #{setmealId}, #{name}, #{amount}, #{image}, #{number}, #{dishFlavor},#{createTime})")
     void insert(ShoppingCart shoppingCart);
+
+    /**
+     * 删除购物车数据,根据对象删除，可以删除一个，也可以上删除一堆
+     */
+    void cleanShoppingCard(ShoppingCart shoppingCart);
 }

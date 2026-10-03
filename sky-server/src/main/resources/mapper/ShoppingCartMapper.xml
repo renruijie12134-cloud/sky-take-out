@@ -6,6 +6,23 @@
 <!--下面的内容就不一样了-->
 <!--另外要注意这个文件建立的位置，要和Mapper接口建立在同一个包下-->
 <mapper namespace="com.sky.mapper.ShoppingCartMapper">
+    <delete id="cleanShoppingCard">
+        delete from shopping_cart
+        <where>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="dishId != null">
+                and dish_id = #{dishId}
+            </if>
+            <if test="setmealId != null">
+                and setmeal_id = #{setmealId}
+            </if>
+            <if test="dishFlavor != null">
+                and dish_flavor = #{dishFlavor}
+            </if>
+        </where>
+    </delete>
 
 
     <select id="list" resultType="com.sky.entity.ShoppingCart">
