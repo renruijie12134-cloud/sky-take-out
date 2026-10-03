@@ -207,5 +207,21 @@ public class DishServiceImpl implements DishService {
         return dishVOList;
     }
 
+    /**
+     * 菜品起售、停售
+     *
+     * @param status
+     * @param id
+     */
+    public void updateStatus(Integer status, Long id) {
+
+        Dish dish = Dish.builder()
+                .id(id)
+                .status(status)
+                .build();
+
+        dishMapper.updateById(dish);
+    }
+
 
 }

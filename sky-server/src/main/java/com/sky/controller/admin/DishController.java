@@ -66,7 +66,7 @@ public class DishController {
         return Result.success(pageResult);
     }
 
-    /**
+      /**
      * 菜品的批量删除
      * @param ids
      * @return
@@ -133,26 +133,30 @@ public class DishController {
     }
 
     /**
-     * 清流缓存数据
+     * 菜品的起售和停售
+     */
+    @PostMapping("/status/{status}")
+    @ApiOperation("菜品的起售和停售")
+    public Result updateStatus(@PathVariable Integer status, @RequestParam Long id){
+        log.info("菜品的起售和停售：{}", status);
+        dishService.updateStatus(status, id);
+
+        // 清理缓存
+//        Set keys = redisTemplate.keys("dish_*");
+//        redisTemplate.delete(keys);
+        clearCache("dish_*");
+
+        return Result.success();
+    }
+
+    /**
+     * 清除缓存数据
      */
     private void clearCache(String pattern){
         Set keys = redisTemplate.keys(pattern);
         redisTemplate.delete(keys);
     }
 
-//    /**
-//     * 菜品的起售和停售
-//     */
-//    @PostMapping("/status/{status}")
-//    @ApiOperation("菜品的起售和停售")
-//    public Result updateStatus(@PathVariable Integer status, @RequestParam Long id){
-//        log.info("菜品的起售和停售：{}", status);
-//        dishService.updateStatus(status, id);
 
-//        Set keys = redisTemplate.keys("dish_*");
-//        redisTemplate.delete(keys);
-
-//        return Result.success();
-//    }
 
 }
