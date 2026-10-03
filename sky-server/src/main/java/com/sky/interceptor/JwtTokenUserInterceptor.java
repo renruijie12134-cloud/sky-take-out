@@ -51,7 +51,6 @@ public class JwtTokenUserInterceptor implements HandlerInterceptor {
             // 如果 JWT 合法： 就能得到 JWT 中保存的 claims。
             Long userId = Long.valueOf(claims.get(JwtClaimsConstant.USER_ID).toString());
             log.info("当前用户id：", userId);
-
             // 把解析出的员工id放入 ThreadLocal
             // BaseContext是我们已经定义好的工具类，用于往ThreadLocal中保存和获取当前线程的员工id
             BaseContext.setCurrentId(userId);
