@@ -96,6 +96,19 @@ public interface OrderService {
      */
     void cancel(OrdersCancelDTO ordersCancelDTO) throws Exception;
 
+    /**
+     * 派送订单
+     *
+     * @param id
+     */
+    void delivery(Long id);
+
+    /**
+     * 完成订单
+     *
+     * @param id
+     */
+    void complete(Long id);
 
 
 }
