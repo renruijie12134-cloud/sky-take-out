@@ -3,8 +3,12 @@ package com.sky.mapper;
 import com.github.pagehelper.Page;
 import com.sky.dto.OrdersPageQueryDTO;
 import com.sky.entity.Orders;
+import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Mapper
 public interface OrderMapper {
@@ -48,6 +52,12 @@ public interface OrderMapper {
      */
     @Select("select count(id) from orders where status = #{status}")
     Integer countStatus(Integer status);
+
+    /**
+     * 查询订单状态和订单时间满足条件的订单列表
+     */
+    @Select("select * from orders where status = #{status} and order_time < #{timeThreshold}")
+    List<Orders> getByStatusAndOrderTime(Integer status, LocalDateTime timeThreshold);
 
 
 
