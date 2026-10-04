@@ -1,6 +1,7 @@
 package com.sky.mapper;
 
 import com.github.pagehelper.Page;
+import com.sky.dto.GoodsSalesDTO;
 import com.sky.dto.OrdersPageQueryDTO;
 import com.sky.entity.Orders;
 import io.swagger.models.auth.In;
@@ -69,6 +70,11 @@ public interface OrderMapper {
      * 根据Map动态查询订单列表
      */
     Integer countByMap(Map<String, Object> map);
+
+    /**
+     * 查询Top10的菜品信息
+     */
+    List<GoodsSalesDTO> getSalesTop10Statistics(Map<String, Object> map);
 
 
 }
