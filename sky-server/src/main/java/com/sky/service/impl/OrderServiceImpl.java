@@ -35,6 +35,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static com.aliyun.oss.model.Callback.CalbackBodyType.JSON;
+
 @Service
 @Slf4j
 public class OrderServiceImpl implements OrderService {
@@ -513,6 +515,29 @@ public class OrderServiceImpl implements OrderService {
         orderMapper.update(orders);
     }
 
+
+    /**
+     * 催单
+     */
+    public void remind(Long id) {
+        // 根据id查询订单
+        Orders ordersDB = orderMapper.getById(id);
+
+        // 校验订单是否存在，并且状态为待派送或派送中
+        if (ordersDB == null) {
+            throw new OrderBusinessException(MessageConstant.ORDER_STATUS_ERROR);
+        }
+
+        // 通过webSocket向客户端浏览器推送消息，type orderId  content
+        Map map = new HashMap();
+        map.put("type", 2); // 1:表示订单提醒，2：表示催单
+        map.put("orderId", ordersDB.getId());
+        map.put("content", "订单号：" + ordersDB.getNumber());
+
+        String json = JSONObject.toJSONString(map);
+        webSocketServer.sendToAllClient(json);
+
+    }
 
 
 

@@ -2,10 +2,14 @@ package com.sky.service;
 
 import com.sky.dto.*;
 import com.sky.result.PageResult;
+import com.sky.result.Result;
 import com.sky.vo.OrderPaymentVO;
 import com.sky.vo.OrderStatisticsVO;
 import com.sky.vo.OrderSubmitVO;
 import com.sky.vo.OrderVO;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 public interface OrderService {
 
@@ -109,6 +113,12 @@ public interface OrderService {
      * @param id
      */
     void complete(Long id);
+
+    /**
+     * 催单
+     */
+    void remind(Long id);
+
 
 
 }
