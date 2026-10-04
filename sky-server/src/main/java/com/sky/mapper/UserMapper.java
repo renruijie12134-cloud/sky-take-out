@@ -34,7 +34,7 @@ public interface UserMapper {
     /**
      * 根据Map动态查询新增用户
      */
-    Integer countUser(Map<String, LocalDateTime> map);
+    Integer countUser(Map<String, Object> map);
 
 
 }

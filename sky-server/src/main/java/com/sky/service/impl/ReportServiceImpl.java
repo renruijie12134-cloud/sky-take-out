@@ -87,8 +87,8 @@ public class ReportServiceImpl implements ReportService {
         for (LocalDate date : dateList) {
             LocalDateTime beginTime = LocalDateTime.of(date, LocalTime.MIN);
             LocalDateTime endTime = LocalDateTime.of(date, LocalTime.MAX);
-            Map<String, LocalDateTime> map1 = new HashMap<>();
-            Map<String, LocalDateTime> map2 = new HashMap<>();
+            Map<String, Object> map1 = new HashMap<>();
+            Map<String, Object> map2 = new HashMap<>();
             map1.put("begin", beginTime);
             map1.put("end", endTime);
             map2.put("end", endTime);
