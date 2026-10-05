@@ -19,8 +19,3 @@ public @interface AutoFill {
     OperationType value();
 
 }
-/*
-@Target(ElementType.METHOD)
-@Retention(RetentionPolicy.RUNTIME)
-
- */

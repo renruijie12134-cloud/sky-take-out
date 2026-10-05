@@ -1,6 +1,4 @@
 package com.sky.task;
-
-
 import com.sky.entity.Orders;
 import com.sky.mapper.OrderMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +20,6 @@ public class OrderTask {
     @Autowired
     private OrderMapper orderMapper;
 
-
     /**
      * 处理超时订单方法
      */
@@ -30,7 +27,6 @@ public class OrderTask {
     public void orderTimeoutCheck() {
         log.info("订单超时检查任务开始执行{}", LocalDateTime.now());
         List<Orders> ordersList = orderMapper.getByStatusAndOrderTime(Orders.PENDING_PAYMENT, LocalDateTime.now().minusMinutes(15));
-
         if (ordersList != null && ordersList.size() > 0) {
             for (Orders orders : ordersList) {
                 orders.setStatus(Orders.CANCELLED);
@@ -38,7 +34,6 @@ public class OrderTask {
                 orders.setCancelReason("订单超时未支付，系统自动取消");
                 orderMapper.update(orders);
             }
-
         }
     }
 
@@ -59,7 +54,4 @@ public class OrderTask {
         }
 
     }
-
-
-
 }

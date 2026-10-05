@@ -31,11 +31,8 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
 
     @Autowired
     private JwtTokenAdminInterceptor jwtTokenAdminInterceptor;
-
     @Autowired
     private JwtTokenUserInterceptor jwtTokenUserInterceptor;
-
-
 
     /**
      * 注册自定义拦截器
@@ -53,11 +50,6 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
                 .excludePathPatterns("/user/user/login")
                 .excludePathPatterns("/user/shop/status");
     }
-
-
-
-
-
 
     /**
      * 通过knife4j生成接口文档
@@ -80,7 +72,6 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
                 .build();
         return docket;
     }
-
     @Bean
     public Docket docket2() {
         log.info("开始生成接口文档...");
@@ -99,8 +90,6 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
         return docket;
     }
 
-
-
     /**
      * 设置静态资源映射
      * @param registry
@@ -111,7 +100,6 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
         registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
 
     }
-
 
     /**
      * 扩展spring MVC 框架的消息转化器
@@ -131,4 +119,5 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
         converters.add(0, converter);
 
     }
+
 }
